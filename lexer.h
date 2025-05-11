@@ -4,16 +4,22 @@
 typedef enum {
     TOKEN_EOF,
     TOKEN_INT,
+    TOKEN_MAIN,
     TOKEN_RETURN,
-    TOKEN_IDENTIFIER
+    TOKEN_NUMBER,
+    TOKEN_LPAREN,  // (
+    TOKEN_RPAREN,  // )
+    TOKEN_LBRACE,  // {
+    TOKEN_RBRACE,  // }
+    TOKEN_SEMI     // ;
 } TokenType;
 
 typedef struct {
     TokenType type;
-    const char* lexeme;
-    int line;
+    int value; // for numbers
 } Token;
 
+void init_lexer(const char* src);
 Token get_next_token();
 
 #endif
