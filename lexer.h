@@ -7,19 +7,23 @@ typedef enum {
     TOKEN_MAIN,
     TOKEN_RETURN,
     TOKEN_NUMBER,
-    TOKEN_LPAREN,  // (
-    TOKEN_RPAREN,  // )
-    TOKEN_LBRACE,  // {
-    TOKEN_RBRACE,  // }
-    TOKEN_SEMI     // ;
+    TOKEN_PUTS,
+    TOKEN_STRING,      // ← NEW
+    TOKEN_LPAREN,
+    TOKEN_RPAREN,
+    TOKEN_LBRACE,
+    TOKEN_RBRACE,
+    TOKEN_SEMI
 } TokenType;
 
 typedef struct {
     TokenType type;
-    int value; // for numbers
+    const char* lexeme;  // ← użyj lexeme do stringów
+    int value;
 } Token;
 
 void init_lexer(const char* src);
-Token get_next_token();
+Token get_next_token(void);
+
 
 #endif

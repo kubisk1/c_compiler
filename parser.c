@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 static Token current;
 
 static void advance() {
@@ -13,7 +12,7 @@ static void advance() {
 
 static void expect(TokenType type) {
     if (current.type != type) {
-        printf("Unexpected token. Exiting.\n");
+        printf("Unexpected token: %s\n", current.lexeme);
         exit(1);
     }
     advance();
@@ -25,16 +24,24 @@ void parse_and_generate() {
     expect(TOKEN_LPAREN);
     expect(TOKEN_RPAREN);
     expect(TOKEN_LBRACE);
-    expect(TOKEN_RETURN);
 
-    int value = 0;
-    if (current.type == TOKEN_NUMBER) {
-        value = current.value;
+    if (current.type == TOKEN_PUTS) {
         advance();
+        expect(TOKEN_LPAREN);
+        if (current.type != TOKEN_STRING) {
+            printf("Expected string in puts()\n");
+            exit(1);
+        }
+        const char* text = current.lexeme;
+        advance();
+        expect(TOKEN_RPAREN);
+        expect(TOKEN_SEMI);
+
+        generate_puts_program(text);
     }
 
+    expect(TOKEN_RETURN);
+    expect(TOKEN_NUMBER);
     expect(TOKEN_SEMI);
     expect(TOKEN_RBRACE);
-
-    generate_return_assembly(value);
 }
